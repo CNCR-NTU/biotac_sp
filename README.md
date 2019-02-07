@@ -4,6 +4,9 @@ This is repository for hosting the Biotac SP sensors sofware released under the 
 
 # Requirements
 
+## Documentation
+* [Biotac SP user manual](https://github.com/pedrombmachado/biotac_sp/blob/master/doc/BioTac_SP_Product_Manual.pdf)
+
 ## Hardware
 * 3x Biotac SP sensors
 * Biotac Board
@@ -47,7 +50,7 @@ $ ./installCheetahDriver.sh
 $ make
 $ bin/biotac_sp
 ```
-# Understanding the generated data
+# Understanding the data
 4x data frames are colected per second. Each frame is composed follows the recommended Dafault sampling sequence.
 
 Figure 2 shows the Default Sampling	Sequence

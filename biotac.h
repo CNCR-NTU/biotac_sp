@@ -232,7 +232,7 @@ BioTac 		bt_cheetah_get_properties(Cheetah ch_handle, int bt_select, bt_property
 BioTac 		bt_cheetah_configure_batch(Cheetah ch_handle, bt_info *biotac, int num_samples);
 bt_data*	bt_configure_save_buffer(int num_samples);
 void 		bt_cheetah_collect_batch(Cheetah ch_handle, const bt_info *biotac, bt_data *data, BOOL print_flag);
-void        bt_cheetah_collect_batch_ntu(Cheetah ch_handle, const bt_info *biotac, bt_data *data, int results[4][162]);
+void        bt_cheetah_collect_1_batch(Cheetah ch_handle, const bt_info *biotac, bt_data *data, int results[4][162]);
 void		bt_display_errors(BioTac bt_err_code);
 void 		bt_save_buffer_data(const char *file_name, const bt_data *data, int num_samples);
 void 		bt_cheetah_close(Cheetah ch_handle);

@@ -555,7 +555,7 @@ void bt_cheetah_collect_batch(Cheetah ch_handle, const bt_info *biotac, bt_data 
 //=========================================================================
 // NTU configuration
 //=========================================================================
-void bt_cheetah_collect_batch_ntu(Cheetah ch_handle, const bt_info *biotac, bt_data *data, int results[4][162])
+void bt_cheetah_collect_1_batch(Cheetah ch_handle, const bt_info *biotac, bt_data *data, int results[4][162])
 {
 	int i, j;
  	int byte_shift = 2 + (MAX_BIOTACS_PER_CHEETAH * 2);			// 2 bytes of command + 2 bytes per BioTac data

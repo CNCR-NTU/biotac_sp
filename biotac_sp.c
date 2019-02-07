@@ -31,6 +31,7 @@
 //=========================================================================
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 // #include <ros/ros.h>
 // #include <sstream>
 // #include <string>
@@ -76,8 +77,8 @@ int main(int argc,char **argv)
 	biotac.batch.batch_ms = BT_BATCH_MS_DEFAULT;
 
 	// Set the duration of the run time
-	length_of_data_in_second = 3;
-	number_of_samples = (int)(BT_SAMPLE_RATE_HZ_DEFAULT); // * length_of_data_in_second)
+	//length_of_data_in_second = 1.;
+	number_of_samples = (int)(BT_SAMPLE_RATE_HZ_DEFAULT);// * length_of_data_in_second);
 
 	// Check if any initial settings are wrong
 	if (MAX_BIOTACS_PER_CHEETAH != 3 && MAX_BIOTACS_PER_CHEETAH != 5)
@@ -157,23 +158,25 @@ int main(int argc,char **argv)
 //     while (ros::ok())
 //     {
     
-        int results[4][162]; 
+        static int results[4][162]; 
         for (i = 0; i < number_of_loops; i++)
         {
             // To print out data on Terminal, set the fourth argument to YES (NO by default)
     // 		bt_cheetah_collect_batch(ch_handle, &biotac, data, YES);
-            bt_cheetah_collect_batch_ntu(ch_handle, &biotac, data, results);
+            bt_cheetah_collect_1_batch(ch_handle, &biotac, data, results);
         }
         
         printf("Results: \n");
 //         std_msgs::String s_results;
+        static int results_vec[163]; 
         for(int k=0; k<4; ++k)
         {
-            printf("\n[");
+            printf("\n\n");
             for (int l=0; l<162;++l)
             {
-                if (l==0) printf("%6d",results[k][l]);
-                else printf(",%6d",results[k][l]);
+                
+                results_vec[l+1]+=(int)results[k][l]/4.;
+                printf(" %d",results[k][l]);
 //             std::stringstream ss;
 //             ss<< results[k];
 //             if k==0 
@@ -185,8 +188,17 @@ int main(int argc,char **argv)
 //                 s_results+=","+ss;
 //             }
             }
-            printf("]\n");
         }
+        
+        results_vec[0]=time(NULL);
+        printf("\n\nResults:\n[");
+        for (int l=0; l<163;++l)
+        {
+            if (l==0) printf("%d",results_vec[l]);
+            else printf(", %d",results_vec[l]);
+        }
+        printf("]\n");
+        
 //         s_results+="]";
 //         msg.data = s_results.str();
 //         ROS_INFO("%s", msg.data.c_str());

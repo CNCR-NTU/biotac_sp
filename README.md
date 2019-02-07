@@ -17,7 +17,8 @@ This is repository for hosting the Biotac SP sensors sofware released under the 
 
 # Installation procedure:
 ## Step 1: Connect the equipment 
-Firure 1 shows the configuration setup
+Figure 1 shows the configuration setup
+
 ![](https://github.com/pedrombmachado/biotac_sp/blob/master/doc/Biotac.png)
 
 Figure 1: Biotac setup

@@ -2,8 +2,10 @@
 | (c) 2011-2012  SynTouch LLC
 |--------------------------------------------------------------------------
 | Project : BioTac C Library for Cheetah
-| File    : example.c
-| Authors : Gary Lin (gary.lin@syntouchllc.com)
+| File    : biotac_sp.c
+| Authors : Pedro Machado (pedro.baptistamachado@ntu.ac.uk)
+| Adapted from the original Authors:
+|            Gary Lin (gary.lin@syntouchllc.com)
 |			Tomonori Yamamoto (tomonori.yamamoto@syntouchllc.com)
 |			Jeremy Fishel (jeremy.fishel@syntouchllc.com)
 |--------------------------------------------------------------------------
@@ -32,15 +34,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-// #include <ros/ros.h>
-// #include <sstream>
-// #include <string>
-// #include <iostream>
 
 #include "cheetah.h"
 #include "biotac.h"
 
-// using namespace std;
 
 //=========================================================================
 // MAIN PROGRAM
@@ -56,10 +53,6 @@ int main(int argc,char **argv)
 	BioTac bt_err_code;
 	Cheetah ch_handle;
     
-//     ros::init( "biotac_sp");
-//     ros::NodeHandle n;
-//     ros::Rate loop_rate(100);
-//     ros::Publisher biotac_sp_pub = n.advertise<std_msgs::String>("biotac_sp", 1000);
     
 	int i;
 	int length_of_data_in_second;
@@ -76,9 +69,7 @@ int main(int argc,char **argv)
 	biotac.batch.batch_frame_count = BT_FRAMES_IN_BATCH_DEFAULT;
 	biotac.batch.batch_ms = BT_BATCH_MS_DEFAULT;
 
-	// Set the duration of the run time
-	//length_of_data_in_second = 1.;
-	number_of_samples = (int)(BT_SAMPLE_RATE_HZ_DEFAULT);// * length_of_data_in_second);
+	number_of_samples = (int)(BT_SAMPLE_RATE_HZ_DEFAULT);
 
 	// Check if any initial settings are wrong
 	if (MAX_BIOTACS_PER_CHEETAH != 3 && MAX_BIOTACS_PER_CHEETAH != 5)
@@ -123,104 +114,78 @@ int main(int argc,char **argv)
 	{
 		printf("\n%d BioTac(s) detected.\n\n", biotac.number_of_biotacs);
 	}
-
-	// The programs stops here until it accepts [Enter] key hit
-	//printf("Press [Enter] to continue ...");
-	//fflush(stdout);
-	//getchar();
-
-	/*************************************/
-	/* --- Configure the save buffer --- */
-	/*************************************/
-    printf("Number of samples: %d\n",number_of_samples);
-	data = bt_configure_save_buffer(number_of_samples);
-
-	/*******************************/
-	/* --- Configure the batch --- */
-	/*******************************/
-	bt_err_code = bt_cheetah_configure_batch(ch_handle, &biotac, number_of_samples);
-	if (bt_err_code < 0)
-	{
-		bt_display_errors(bt_err_code);
-		exit(1);
-	}
-	else
-	{
-		printf("\nConfigured the batch\n");
-	}
-
-	/***************************************************************/
-	/* --- Collect the batch and display the data (if desired) --- */
-	/***************************************************************/
-	//number_of_loops = (int)(number_of_samples / ((double)(biotac.frame.frame_size * biotac.batch.batch_frame_count)));
-	number_of_loops=1;
-	printf("Start collecting BioTac...\n");
-//     while (ros::ok())
-//     {
-    
-        static int results[4][162]; 
-        for (i = 0; i < number_of_loops; i++)
+    static int results[4][162]; 
+    static int results_vec[162];
+    static int ivec_results[163];
+    for  (int n = 0; n < 100; ++n)
         {
-            // To print out data on Terminal, set the fourth argument to YES (NO by default)
-    // 		bt_cheetah_collect_batch(ch_handle, &biotac, data, YES);
-            bt_cheetah_collect_1_batch(ch_handle, &biotac, data, results);
+        /*************************************/
+        /* --- Configure the save buffer --- */
+        /*************************************/
+        printf("Number of samples: %d\n",number_of_samples);
+        data = bt_configure_save_buffer(number_of_samples);
+
+        /*******************************/
+        /* --- Configure the batch --- */
+        /*******************************/
+        bt_err_code = bt_cheetah_configure_batch(ch_handle, &biotac, number_of_samples);
+        if (bt_err_code < 0)
+        {
+            bt_display_errors(bt_err_code);
+            exit(1);
         }
-        
-        printf("Results: \n");
-//         std_msgs::String s_results;
-        static int results_vec[163]; 
-        for(int k=0; k<4; ++k)
+        else
         {
-            printf("\n\n");
-            for (int l=0; l<162;++l)
-            {
+            printf("\nConfigured the batch\n");
+        }
+
+        /***************************************************************/
+        /* --- Collect the batch and display the data (if desired) --- */
+        /***************************************************************/
+        //number_of_loops = (int)(number_of_samples / ((double)(biotac.frame.frame_size * biotac.batch.batch_frame_count)));
+        number_of_loops=1;
+        printf("Collecting 100 batches using the 3x BioTac SP sensors...\n");
+        
+        
+                memset(results, 0, sizeof results);
+                for (i = 0; i < number_of_loops; i++)
+                {
+                    bt_cheetah_collect_1_batch(ch_handle, &biotac, data, results);
+                }
                 
-                results_vec[l+1]+=(int)results[k][l]/4.;
-                printf(" %d",results[k][l]);
-//             std::stringstream ss;
-//             ss<< results[k];
-//             if k==0 
-//             {
-//                 s_results="["+ss;
-//             }
-//             else
-//             {
-//                 s_results+=","+ss;
-//             }
-            }
-        }
-        
-        results_vec[0]=time(NULL);
-        printf("\n\nResults:\n[");
-        for (int l=0; l<163;++l)
-        {
-            if (l==0) printf("%d",results_vec[l]);
-            else printf(", %d",results_vec[l]);
-        }
-        printf("]\n");
-        
-//         s_results+="]";
-//         msg.data = s_results.str();
-//         ROS_INFO("%s", msg.data.c_str());
-//         biotac_sp_pub.publish(msg);
-//         ros::spin();
-//         loop_rate.sleep();
-//     }
-//     
-	/*********************/
-    /* --- Save data --- */
-	/*********************/
-	//bt_save_buffer_data("output.txt", data, number_of_samples);
+                printf("Results: \n");
+                memset(results_vec, 0, sizeof results_vec);
+                for(int k=0; k<4; ++k)
+                {
+                    printf("\n\n");
+                    for (int l=0; l<162;++l)
+                    {
+                        
+                        results_vec[l]+=results[k][l]/4.;
+                        printf(" %d",results[k][l]);
+                    }
+                }
+                memset(ivec_results, 0, sizeof ivec_results);
+                printf("\n\nResults:\n[");
+                ivec_results[0]=time(NULL);
+                for (int l=0; l<163;++l)
+                {
+                    if (l==0){
+                        ivec_results[l]=time(NULL);
+                        printf("%d",ivec_results[l]);   
+                    }
+                    else{
+                        ivec_results[l]=results_vec[l-1];
+                        printf(", %d",ivec_results[l]);
+                    }
+                }
+                printf("]\n");
+            
 
-	/**************************/
-    /* --- Close and exit --- */
-	/**************************/
-	//printf("Press [Enter] to close the program");
-	//fflush(stdout);
-	//getchar();
-
-	free(data);
+            free(data);
+        }
     bt_cheetah_close(ch_handle);
+    
 
     return 0;
 }

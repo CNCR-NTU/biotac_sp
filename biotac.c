@@ -637,13 +637,13 @@ void bt_cheetah_collect_1_batch(Cheetah ch_handle, const bt_info *biotac, bt_dat
 				data[count].bt_parity[j] = PARITY_BAD;
 			}
 		}
-		printf("%d, %6.0f, %6.0f,  %s", count , data[count].batch_index, data[count].frame_index, command_name[data[count].channel_id]);
+		//printf("%d, %6.0f, %6.0f,  %s", count , data[count].batch_index, data[count].frame_index, command_name[data[count].channel_id]);
         results[(int)data[count].frame_index-1][ct]=data[count].d[0].word;
-        printf("%6d, ", data[count].d[0].word);
+        //printf("%6d, ", data[count].d[0].word);
         results[(int)data[count].frame_index-1][ct+54]=data[count].d[1].word;
-        printf("%6d, ", data[count].d[1].word);
+        //printf("%6d, ", data[count].d[1].word);
         results[(int)data[count].frame_index-1][ct+108]=data[count].d[2].word;
-        printf("%6d\n", data[count].d[2].word);
+        //printf("%6d\n", data[count].d[2].word);
         count++;
         if (ct<53) ct+=1;
         else ct=0;

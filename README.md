@@ -73,5 +73,9 @@ s03 - sensor 3
 
 With exception of the time, each of the values is the average of the individual values of the 4x frames collected during 1 sec.
 
-# Support
+# Contacts
+Computational Neurosciences and Cognitive Robotics Group at the Nottingham Trent University.
 Pedro Machado <pedro.baptistamachado@ntu.ac.uk>
+Martin McGinnity <martin.mcginnity@ntu.ac.uk>
+
+

@@ -33,7 +33,7 @@ $ sudo apt install build-essential git
 ## Step 3: clone the repository
 ```
 $ cd ~
-$ git clone git@gitlab.com:CNCR-NTU/biotac_sp_sensors.git
+$ git clone https://github.com/pedrombmachado/biotac_sp.git
 ```
 
 ## Step 4: install the drivers

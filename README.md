@@ -29,7 +29,7 @@ Figure 1: Biotac setup
 ## Step 2: Update the OS and install base packets
 
 ```
-$ sudo apt update & sudo apt upgrade -y & sudo apt dist-upgrade -y & sudo apt autoremove -y & sudo apt autoclean -y
+$ sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt autoclean -y
 $ sudo apt install build-essential git
 ```
 
